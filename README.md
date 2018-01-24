@@ -1,2 +1,2 @@
-# SmubinByamlEdit
-A graphic tool for editing smubin that yaz0 decoded
+# Byaml_Editor
+Byaml_Editor,has Yaz0 decode and encode algorithm 
