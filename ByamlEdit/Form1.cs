@@ -10,11 +10,12 @@ using System.Windows.Forms;
 
 namespace ByamlEdit
 {
-    public partial class ByamlEdit : Form
+    public partial class Byaml_Editor : Form
     {
         Byaml byaml;
 
-        public ByamlEdit()
+
+        public Byaml_Editor()
         {
             InitializeComponent();
         }
@@ -39,8 +40,9 @@ namespace ByamlEdit
                 if (s[i].Trim() != "")
                 {
                     byaml = new Byaml(s[i]);
+                    this.Controls.Clear();
                     byaml.Show(this);
-                    this.Text = "ByamlEdit" + "(" +s[i]+ ")";
+                    this.Text = "Byaml_Editor" + "(" +s[i]+ ")";
                     break;
                 }
             }

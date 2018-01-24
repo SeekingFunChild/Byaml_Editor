@@ -30,11 +30,6 @@ namespace ByamlEdit
         public abstract ByamlNodeType Type { get; }
         public virtual bool CanBeAttribute { get { return false; } }
 
-        public virtual void ToByaml(EndianBinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual void Show(ShowNode parent, List<string> nodes, List<string> values)
         {
             throw new NotImplementedException();
@@ -61,13 +56,6 @@ namespace ByamlEdit
             public String(int value)
             {
                 Value = value;
-            }
-
-
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                writer.BaseStream.Seek(Address, SeekOrigin.Begin);
-                writer.Write(this.Value);
             }
 
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
@@ -105,13 +93,6 @@ namespace ByamlEdit
                 Value = value;
             }
 
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                writer.BaseStream.Seek(Address, SeekOrigin.Begin);
-                int b=Value?1:0;
-                writer.Write(b);
-            }
-
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
             {
                 ShowNode treeNode = new ShowNode(Value.ToString());
@@ -146,12 +127,6 @@ namespace ByamlEdit
             public Int(uint value)
             {
                 Value = value;
-            }
-
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                writer.BaseStream.Seek(Address, SeekOrigin.Begin);
-                writer.Write(this.Value);
             }
 
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
@@ -191,12 +166,6 @@ namespace ByamlEdit
                 Value = value;
             }
 
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                writer.BaseStream.Seek(Address, SeekOrigin.Begin);
-                writer.Write(this.Value);
-            }
-
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
             {
                 ShowNode treeNode = new ShowNode(Value.ToString());
@@ -231,12 +200,6 @@ namespace ByamlEdit
             public Single(float value)
             {
                 Value = value;
-            }
-
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                writer.BaseStream.Seek(Address, SeekOrigin.Begin);
-                writer.Write(Value);
             }
 
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
@@ -319,14 +282,6 @@ namespace ByamlEdit
                 Nodes = new Collection<ByamlNode>();
             }
 
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                foreach (var node in Nodes)
-                {
-                    node.ToByaml(writer);
-                }
-            }
-
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
             {
                 foreach (var node in Nodes)
@@ -401,13 +356,6 @@ namespace ByamlEdit
                 Nodes = new Collection<KeyValuePair<int, ByamlNode>>();
             }
 
-            public override void ToByaml(EndianBinaryWriter writer)
-            {
-                foreach (var node in Nodes)
-                {
-                    node.Value.ToByaml(writer);
-                }
-            }
 
             public override void Show(ShowNode parent, List<string> nodes, List<string> values)
             {

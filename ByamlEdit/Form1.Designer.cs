@@ -1,6 +1,6 @@
 ﻿namespace ByamlEdit
 {
-    partial class ByamlEdit
+    partial class Byaml_Editor
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -30,15 +30,15 @@
         {
             this.SuspendLayout();
             // 
-            // ByamlEdit
+            // Byaml_Editor
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1576, 833);
-            this.Name = "ByamlEdit";
-            this.Text = "ByamlEdit";
+            this.Name = "Byaml_Editor";
+            this.Text = "Byaml_Editor";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.ByamlEdit_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.ByamlEdit_DragEnter);
             this.ResumeLayout(false);

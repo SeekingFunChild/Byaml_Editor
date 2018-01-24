@@ -13,9 +13,11 @@ namespace ByamlEdit
     {
         string path;
 
+        bool isYaz0 = false;
         List<string> nodes;
         List<string> values;
         ByamlNode tree;
+
 
         #region controls
         TreeView treeView;
@@ -28,7 +30,7 @@ namespace ByamlEdit
 
         Button Copy;
         Button Paste;
- 
+
         ComboBox NewNodeType;
         Button NewNode;
         Button DeleteNode;
@@ -50,8 +52,15 @@ namespace ByamlEdit
 
             searched_nodes = new List<TreeNode>();
 
-           var  fs = new FileStream(byamlFile, FileMode.Open);
-            var reader = new EndianBinaryReader(fs);
+            byte[] bytes = File.ReadAllBytes(byamlFile);
+            isYaz0 = Yaz0.IsYaz0(bytes);
+            if(isYaz0)
+            {
+                bytes = Yaz0.decode(bytes);
+            }
+
+            var stream = new MemoryStream(bytes);
+            var reader = new EndianBinaryReader(stream);
             reader.Endianness = Endianness.BigEndian;
 
             if (reader.ReadUInt16() != 0x4259)
@@ -99,10 +108,8 @@ namespace ByamlEdit
             reader.Close();
         }
 
-        public void Show(Control control)
+        public void Show(Form control)
         {
-            control.Controls.Clear();
-
             treeView = new TreeView();
             treeView.Width = control.Width - 200;
             treeView.Height = control.Height - 100;
@@ -113,7 +120,7 @@ namespace ByamlEdit
 
 
             SearchText = new TextBox();
-            SearchText.Top = treeView.Bottom+10;
+            SearchText.Top = treeView.Bottom + 10;
             SearchText.Left = SearchText.Left;
             control.Controls.Add(SearchText);
 
@@ -226,9 +233,9 @@ namespace ByamlEdit
             Save.Click += SaveClick;
             control.Controls.Add(Save);
 
+            control.Controls.Add(treeView);
 
             treeView.Nodes.Add(root);
-            control.Controls.Add(treeView);
             tree.Show(root, nodes, values);
         }
 
@@ -418,7 +425,8 @@ namespace ByamlEdit
 
         private void SaveClick(object sender, EventArgs e)
         {
-            using (EndianBinaryWriter writer = new EndianBinaryWriter(new FileStream(path + ".new", FileMode.Create)))
+            byte[] temp = new byte[20 * 1024 * 1024];
+            using (EndianBinaryWriter writer = new EndianBinaryWriter(new MemoryStream(temp)))
             {
                 nodes.Clear();
                 values.Clear();
@@ -427,7 +435,20 @@ namespace ByamlEdit
                 values.Sort(CustomStringSort);
 
                 nodeChaches.Clear();
-                SaveTreeToFile(root, writer);
+                int len=SaveTreeToFile(root, writer);
+                byte[] bytes = new byte[len];
+                for(int i=0;i<len;i++)
+                {
+                    bytes[i] = temp[i];
+                }
+
+                if(isYaz0)
+                {
+                    bytes = Yaz0.encode(bytes);
+                }
+
+                File.WriteAllBytes(path, bytes);
+
                 writer.Close();
             }
             MessageBox.Show("save successful");
@@ -744,7 +765,7 @@ namespace ByamlEdit
             }
         }
 
-        private void SaveTreeToFile(ShowNode rootNode, EndianBinaryWriter writer)
+        private int SaveTreeToFile(ShowNode rootNode, EndianBinaryWriter writer)
         {
             long headerPtr = 0;
             //writer magic
@@ -768,6 +789,8 @@ namespace ByamlEdit
             writer.BaseStream.Seek(headerPtr, SeekOrigin.Begin);
             writer.Write(treeOffset);
             WriteByamlNodes(rootNode, treeOffset, writer);
+
+            return (int)writer.BaseStream.Position;
         }
         #endregion
     }

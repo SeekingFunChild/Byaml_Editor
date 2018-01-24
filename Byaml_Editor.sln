@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByamlEdit", "ByamlEdit\ByamlEdit.csproj", "{D5BD423F-36B7-4939-8249-ABD0A9FEC5BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Byaml_Editor", "ByamlEdit\Byaml_Editor.csproj", "{D5BD423F-36B7-4939-8249-ABD0A9FEC5BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

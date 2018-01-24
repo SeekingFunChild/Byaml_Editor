@@ -16,7 +16,7 @@ namespace ByamlEdit
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ByamlEdit());
+            Application.Run(new Byaml_Editor());
         }
     }
 }
