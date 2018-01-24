@@ -12,7 +12,7 @@ namespace ByamlEdit
         {
             //find need compressed position
             uint curPos = 0;
-            List<KeyValuePair<uint, KeyValuePair<uint, uint>>> findCaches = new List<KeyValuePair<uint, KeyValuePair<uint, uint>>>();
+            //List<KeyValuePair<uint, KeyValuePair<uint, uint>>> findCaches = new List<KeyValuePair<uint, KeyValuePair<uint, uint>>>();
             List<KeyValuePair<uint, KeyValuePair<uint, uint>>> finds = new List<KeyValuePair<uint, KeyValuePair<uint, uint>>>();
             while(curPos<src.Length)
             {
@@ -21,7 +21,7 @@ namespace ByamlEdit
                 {
                     finds.Add(find);      
                 }
-                findCaches.Add(find);
+                //findCaches.Add(find);
                 curPos = find.Key + find.Value.Value;
             }
 
@@ -270,74 +270,6 @@ namespace ByamlEdit
 
             return -1;     
         }
-
-        private static int search(byte[] bytes,uint start,uint end,byte[] sign)
-        {
-            for(uint i=start;i<end;i++)
-            {
-                int j = 0;
-                while(j<sign.Length)
-                {
-                    if (i + j >= end)
-                    {
-                        if (sign[j] != 0x00)
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (bytes[i + j] != sign[j])
-                        {
-                            break;
-                        }
-                    }
-                    j++;
-                }
-
-                if(j==sign.Length)
-                {
-                    return (int)i;
-                }
-            }
-            return -1;
-        }
-        
-        private static uint calLength(byte[] bytes,uint findPos,uint curPos)
-        {
-            uint len = 3;
-            for(int index=3;index<0xFF+0x12;index++)
-            {
-                if(findPos+index<curPos)
-                {
-                    if(curPos+index>=bytes.Length)
-                    {
-                        break;
-                    }
-
-                    if(bytes[findPos+index]==bytes[curPos+index])
-                    {
-                        len++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    if(bytes[curPos+index]==0x00)
-                    {
-                        len++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            return len;
-        }
         
         public static byte[] decode(byte[] src)
         {
@@ -352,7 +284,7 @@ namespace ByamlEdit
             uint dstPos = 0;
 
             byte Opcode = 0x00;
-            List<KeyValuePair<int, KeyValuePair<int, int>>> finds = new List<KeyValuePair<int, KeyValuePair<int, int>>>();
+            //List<KeyValuePair<int, KeyValuePair<int, int>>> finds = new List<KeyValuePair<int, KeyValuePair<int, int>>>();
             while(true)
             {
                 Opcode = src[srcPos];
@@ -383,7 +315,7 @@ namespace ByamlEdit
                         }
                         uint dist = (uint)((b1 & 0x0F) << 8 | b2)+1;
                         uint copyPos = dstPos - dist;
-                        finds.Add(new KeyValuePair<int, KeyValuePair<int, int>>((int)dstPos, new KeyValuePair<int, int>((int)copyPos, (int)copyLen)));
+                       // finds.Add(new KeyValuePair<int, KeyValuePair<int, int>>((int)dstPos, new KeyValuePair<int, int>((int)copyPos, (int)copyLen)));
                         for(int j=0;j<copyLen;j++)
                         {
                             dst[dstPos] = dst[copyPos];
